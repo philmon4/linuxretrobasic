@@ -1,3 +1,19 @@
+STM32BASIC
+==========
+My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
+
+Step 1
+1: convert files to .c, because that's what they are.
+2: gently strip out or add preprocessor selections around all the Arduino specific code. I fully expect to break arduino compatability at some point but I'll try to keep changes to the basic interpreter clean enough to reintegrate back into the arduino interpreter unless they are very device specific.
+3: build in a framework to allow compilation to Linux first because I've got a load of extensions to add to the BASIC language and most can be more easily tested outside the microncontroller device.
+4: start integrating the essential external peripherals - Keyboard - Display
+
+I have a concept model working based on a forked version of robins work that somehow got labelled with GPL. I like MIT, so I'll be tidying up and integrating my code into this fork and sticking with MIT.
+
+
+Original README (untouched) follows
+===================================
+
 Arduino Basic
 =============
 Now you can turn your Arduino into an 80's home computer!
