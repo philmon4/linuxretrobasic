@@ -2,6 +2,8 @@ RetroStyle STM32
 ==========
 My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
+*NB This is a non-working repo right now. The first step to get a Linux version of the BASIC interpreter up and running should be available in the next week or so.*
+
 Stages
 ------
 1: convert files to .c, because that's what they are.

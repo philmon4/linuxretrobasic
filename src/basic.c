@@ -1,4 +1,35 @@
-/* ---------------------------------------------------------------------------
+/**
+ * @file basic.c
+ * @brief This code is based on code released by Robin Edwards; see comment below.
+ * The original code looks like it was all intended to be put under MIT and I'm
+ * adding it to each significant file as I go.
+ *
+ * Destination is to get this original code from Robin onto a standalone
+ * 'RetroStyle STM32'. The general idea is to keep the existing host api as
+ * unchanged as possible, except for addition of extra api functions, and basic
+ * commands / functions.
+ *
+ * *) First step is to get a linux wrapper done so I can play with the core
+ * interpreter easily.
+ * *) Second step will be to get it running using a pc as a dumb serial terminal.
+ * *) Final step will integrate it with display and keyboard to enjoy instant
+ *    BASIC 'fun' at power on.
+ *
+ * Test compile: gcc -c -I inc -D LINUX src/basic.c
+ * Full compile: see    make_linux.sh
+ * gcc  -I inc -D LINUX src/main.c src/host_linux.c src/basic.c -lreadline -lm
+ *
+ *
+ * LICENSE
+ * This code is released under the MIT Licence.
+ * The only condition is: Keep this header comment at the top of the file containing this code.
+ * Disclaimer: Any problems are your problems, and this code is not provided as fit for any purpose at all.
+ * (C)2021 P.Mundy
+ */
+
+
+/* Original header follows [Which will become out of date]
+ * ---------------------------------------------------------------------------
  * Basic Interpreter
  * Robin Edwards 2014
  * ---------------------------------------------------------------------------
@@ -51,10 +82,14 @@
 #include <float.h>
 #include <limits.h>
 
+#include "config.h"
 #include "basic.h"
 #include "host.h"
 
-#include <avr/pgmspace.h>
+#ifdef ARDUINO
+    #include <avr/pgmspace.h>
+#endif
+
 
 int sysPROGEND;
 int sysSTACKSTART, sysSTACKEND;
@@ -175,10 +210,21 @@ void printTokens(unsigned char *p) {
             }
         }
         else {
-            uint8_t fmt = pgm_read_byte_near(&tokenTable[*p].format);
+            #ifdef ARDUINO
+                uint8_t fmt = pgm_read_byte_near(&tokenTable[*p].format);
+            #else
+                uint8_t fmt = tokenTable[*p].format;
+            #endif
+
             if (fmt & TKN_FMT_PRE)
                 host_outputChar(' ');
-            host_outputString((char *)pgm_read_word(&tokenTable[*p].token));
+
+            #ifdef ARDUINO
+                host_outputString((char *)pgm_read_word(&tokenTable[*p].token));
+            #else
+                host_outputString((char *)tokenTable[*p].token);
+            #endif
+
             if (fmt & TKN_FMT_POST)
                 host_outputChar(' ');
             if (*p==TOKEN_REM)
@@ -825,7 +871,13 @@ int nextToken()
         identStr[identLen] = 0;
         // check to see if this is a keyword
         for (int i = FIRST_IDENT_TOKEN; i <= LAST_IDENT_TOKEN; i++) {
+
+#ifdef ARDUINO
             if (strcasecmp(identStr, (char *)pgm_read_word(&tokenTable[i].token)) == 0) {
+#else
+            if (strcasecmp(identStr, (char *)tokenTable[i].token) == 0) {
+#endif
+
                 if (tokenOutLeft <= 1) return ERROR_LEXER_TOO_LONG;
                 tokenOutLeft--;
                 *tokenOut++ = i;
@@ -880,8 +932,14 @@ int nextToken()
     // handle non-alpha tokens e.g. =
     for (int i=LAST_NON_ALPHA_TOKEN; i>=FIRST_NON_ALPHA_TOKEN; i--) {
         // do this "backwards" so we match >= correctly, not as > then =
-        int len = strlen((char *)pgm_read_word(&tokenTable[i].token));
-        if (strncmp((char *)pgm_read_word(&tokenTable[i].token), (char*)tokenIn, len) == 0) {
+#ifdef ARDUINO
+            int len = strlen((char *)pgm_read_word(&tokenTable[i].token));
+            if (strncmp((char *)pgm_read_word(&tokenTable[i].token), (char*)tokenIn, len) == 0) {
+#else
+            int len = strlen((char *)tokenTable[i].token);
+            if (strncmp((char *)tokenTable[i].token, (char*)tokenIn, len) == 0) {
+#endif
+
             if (tokenOutLeft <= 1) return ERROR_LEXER_TOO_LONG;
             *tokenOut++ = i;
             tokenOutLeft--;
@@ -1002,7 +1060,13 @@ int parseSubscriptExpr() {
 // parse a function call e.g. LEN(a$)
 int parseFnCallExpr() {
     int op = curToken;
-    int fnSpec = pgm_read_byte_near(&tokenTable[curToken].format);
+
+    #ifdef ARDUINO
+        int fnSpec = pgm_read_byte_near(&tokenTable[curToken].format);
+    #else
+        int fnSpec = tokenTable[curToken].format;
+    #endif
+
     getNextToken();
     // get the required arguments and types from the token table
     if (curToken != TOKEN_LBRACKET) return ERROR_EXPR_MISSING_BRACKET;
