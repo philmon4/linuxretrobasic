@@ -1,4 +1,4 @@
-STM32BASIC
+RetroStyle STM32
 ==========
 My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
