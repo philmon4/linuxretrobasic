@@ -2,7 +2,8 @@ STM32BASIC
 ==========
 My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
-Step 1
+Stages
+------
 1: convert files to .c, because that's what they are.
 
 2: gently strip out or add preprocessor selections around all the Arduino specific code. I fully expect to break arduino compatability at some point but I'll try to keep changes to the basic interpreter clean enough to reintegrate back into the arduino interpreter unless they are very device specific.
