@@ -25,6 +25,9 @@
  * VT100 terminal codes
  * usage:  VT_BOLD
  */
+#define VT_ESC "\e"
+#define VT_DISP "\e["
+
 #define VT_RESET "\e[0m"
 #define VT_BOLD "\e[1m"
 #define VT_DIM "\e[2m"
@@ -57,22 +60,31 @@
 #define VT_SAVE "\e7"
 #define VT_RESTORE "\e8"
 
-#define VT_CURSOR_UP(A) "\e[" VTXXX_H_STR(A) "A"
+#define VT_CURSOR_UP_CMD "A"
+#define VT_CURSOR_UP(A)  "\e[" VTXXX_H_STR(A) "A"
+
+#define VT_CURSOR_DOWN_CMD "B"
 #define VT_CURSOR_DOWN(A) "\e[" VTXXX_H_STR(A) "B"
-#define VT_CURSOR_RIGHT(A) "\e[" VTXXX_H_STR(A) "C"
-#define VT_CURSOR_LEFT(A) "\e[" VTXXX_H_STR(A) "D"
+
+#define VT_CURSOR_RIGHT_CMD "C"
+#define VT_CURSOR_RIGHT(A)  "\e[" VTXXX_H_STR(A) "C"
+
+#define VT_CURSOR_LEFT_CMD "D"
+#define VT_CURSOR_LEFT(A)  "\e[" VTXXX_H_STR(A) "D"
+
+#define VT_CURSOR_MOVETO_CMD  "H"
 #define VT_CURSOR_MOVETO(L,C) "\e[" VTXXX_H_STR(L) ";" VTXXX_H_STR(C) "H"
 
 #define VT_ERASE_TOEOL "\e[K"
 #define VT_ERASE_FROMSOL "\e[1K"
 #define VT_ERASE_LINE "\e[2K"
 
-#define VT_ERASE_ENDSCREEN "\e[0J]"
-#define VT_ERASE_STARTSCREEN "\e[1J]"
-#define VT_ERASE_SCREEN "\e[2J]"
+#define VT_ERASE_ENDSCREEN "\e[0J"
+#define VT_ERASE_STARTSCREEN "\e[1J"
+#define VT_ERASE_SCREEN "\e[2J"
 
 
-
+void vt_cursor_moveto( char *p_vtcmd, int x, int y);
 
 
 

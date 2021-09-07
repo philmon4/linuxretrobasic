@@ -21,14 +21,11 @@
 
 
 #include "host.h"
-
-
+#include <stdlib.h>
+#include "numeric.h"
+#include "vtxxx.h"
 
 const char bytesFreeStr[] PROGMEM = "bytes free";
-
-
-
-
 
 
 void host_init(void) {
@@ -77,7 +74,10 @@ void host_cls() {
 }
 
 void host_moveCursor(int x, int y) {
-    VT_CURSOR_MOVETO(x,y);
+    char p_vtcmd[16];
+
+    vt_cursor_moveto(p_vtcmd, x, y);
+    host_outputString(p_vtcmd);
 }
 
 void host_showBuffer() {
@@ -121,14 +121,11 @@ int host_outputInt(long num) {
     return c;
 }
 
-char *host_floatToStr(float f, char *buf) {
-    sprintf(buf,"%f",f);
-    return buf;
-}
+
 
 void host_outputFloat(float f) {
     char buf[16];
-    host_outputString(host_floatToStr(f, buf));
+    host_outputString(float_to_sz(f, buf));
 }
 
 void host_newLine() {
@@ -136,6 +133,14 @@ void host_newLine() {
     host_outputChar('\n');
 }
 
+
+
+/**
+readline using linux std readline()  fn.
+the downside is, the linux call doesn't allow pre-stuffing
+a string into the buffer which would have been handy to
+edit an existing BASIC line
+*/
 char *host_readLine() {
     char *line;
 

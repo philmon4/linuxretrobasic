@@ -85,6 +85,7 @@
 #include "config.h"
 #include "basic.h"
 #include "host.h"
+#include "numeric.h"
 
 #ifdef ARDUINO
     #include <avr/pgmspace.h>
@@ -1101,7 +1102,7 @@ int parseFnCallExpr() {
         case TOKEN_STR:
             {
                 char buf[16];
-                if (!stackPushStr(host_floatToStr(stackPopNum(), buf)))
+                if (!stackPushStr(float_to_sz(stackPopNum(), buf)))
                     return ERROR_OUT_OF_MEMORY;
             }
             break;
