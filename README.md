@@ -1,12 +1,12 @@
 RetroStyle STM32
 ==========
-My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
+My primary goal is to transform robin edwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
 Current state
 =============
 make.sh script compiles code under 64bit Ubuntu.
 *  Terminal display:
-Has basic cursor movement and delete functionality for line editor entry. Also clear screen and cursor position updating.
+Integrated an MIT licensed readline function***1** for line editor. Also clear screen and cursor positioning using vt100 escapes.
 Terminal IO tested using in gnome terminal. This should work using a serial terminal like screen too.
 So it could be ported to other platforms at this point.
 * Interpreter:
@@ -22,10 +22,16 @@ Stages
 
 3: build in a framework to allow compilation to Linux first because I've got a load of extensions to add to the BASIC language and most can be more easily tested outside the microncontroller device.
 
-4: start integrating the essential external peripherals - Keyboard - Display
+4: Remove dependencies on third party and GPL libraries, and trim anything that's more complex than needed for the destination microcontroller/cpu environment. This will set the final API for specifc host
+cpu support.
 
-I have a concept model working based on a forked version of robins work that somehow got labelled with GPL. I like MIT, so I'll be tidying up and integrating my code into this fork and sticking with MIT.
+5: start integrating the essential external peripherals - Keyboard - Display
 
+
+Footnotes and credits
+---------------------
+*1 Credit to JC Wang: github:jcwangxp/Crossline for a very nice MIT release of a line editor
+*2 Credit to Robin Edwards for his MIT release of Arduino BASIC.
 
 Original README (untouched) follows
 ===================================
