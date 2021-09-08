@@ -4,7 +4,13 @@
 #include "vtxxx.h"
 #include "numeric.h"
 
-
+/**
+ * @brief Runtime calculated cursor movement escape sequence.
+ * NB. you might want to use the MACRO version for immediate values fixed at compile time:
+ *  ie. VT_CURSOR_MOVETO(1,1)
+ * @param char *p_vtcmd : pointer to buffer big enough to append escape sequence
+ * @param int n : number of character positions to move.
+*/
 void vt_cursor_moveto( char *p_vtcmd, int x, int y){
     int ix = 0;
     int l = 0;
@@ -12,16 +18,16 @@ void vt_cursor_moveto( char *p_vtcmd, int x, int y){
     strcpy(p_vtcmd, VT_DISP); // preamble
     ix = strlen(VT_DISP);
 
-    l = int_to_sz(p_vtcmd+ix, x);
+    l = int_to_sz(p_vtcmd+ix, y);  /* fixed bug y goes first (vert parameter) */
     ix += l;
 
     strcat(p_vtcmd+ix, ";");
     ix++;
 
-    l = int_to_sz(p_vtcmd+ix, y);
+    l = int_to_sz(p_vtcmd+ix, x);
     ix += l;
 
-    strcat(p_vtcmd+ix, VT_CURSOR_MOVETO_CMD);
+    strcpy(p_vtcmd+ix, VT_CURSOR_MOVETO_CMD);
 }
 
 /**
@@ -41,7 +47,7 @@ void vt_cursor_up( char *p_vtcmd, int n){
     l = int_to_sz(p_vtcmd+ix, n);
     ix += l;
 
-    strcat(p_vtcmd+ix, VT_CURSOR_UP_CMD);
+    strcpy(p_vtcmd+ix, VT_CURSOR_UP_CMD);
 }
 
 
@@ -62,7 +68,7 @@ void vt_cursor_down( char *p_vtcmd, int n){
     l = int_to_sz(p_vtcmd+ix, n);
     ix += l;
 
-    strcat(p_vtcmd+ix, VT_CURSOR_DOWN_CMD);
+    strcpy(p_vtcmd+ix, VT_CURSOR_DOWN_CMD);
 }
 
 
@@ -83,7 +89,7 @@ void vt_cursor_left( char *p_vtcmd, int n){
     l = int_to_sz(p_vtcmd+ix, n);
     ix += l;
 
-    strcat(p_vtcmd+ix, VT_CURSOR_LEFT_CMD);
+    strcpy(p_vtcmd+ix, VT_CURSOR_LEFT_CMD);
 }
 
 
@@ -104,7 +110,7 @@ void vt_cursor_right( char *p_vtcmd, int n){
     l = int_to_sz(p_vtcmd+ix, n);
     ix += l;
 
-    strcat(p_vtcmd+ix, VT_CURSOR_RIGHT_CMD);
+    strcpy(p_vtcmd+ix, VT_CURSOR_RIGHT_CMD);
 }
 
 

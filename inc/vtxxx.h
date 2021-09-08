@@ -72,8 +72,9 @@
 #define VT_CURSOR_LEFT_CMD "D"
 #define VT_CURSOR_LEFT(A)  "\e[" VTXXX_H_STR(A) "D"
 
+/* fixed mapping bug to make X->Column Y->Row */
 #define VT_CURSOR_MOVETO_CMD  "H"
-#define VT_CURSOR_MOVETO(L,C) "\e[" VTXXX_H_STR(L) ";" VTXXX_H_STR(C) "H"
+#define VT_CURSOR_MOVETO(X,Y) "\e[" VTXXX_H_STR(Y) ";" VTXXX_H_STR(X) "H"
 
 #define VT_ERASE_TOEOL "\e[K"
 #define VT_ERASE_FROMSOL "\e[1K"
