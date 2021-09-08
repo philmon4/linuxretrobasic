@@ -187,12 +187,12 @@ void printTokens(unsigned char *p) {
         else if (*p == TOKEN_NUMBER) {
             p++;
             host_outputFloat(*(float*)p);
-            p+=4;
+            p+=sizeof(float);                   // changed from constant 4 for the hell of it
         }
         else if (*p == TOKEN_INTEGER) {
             p++;
             host_outputInt(*(long*)p);
-            p+=4;
+            p+=sizeof(long);        // Fixed: PPM was constant 4, untrue for some platforms
         }
         else if (*p == TOKEN_STRING) {
             p++;
