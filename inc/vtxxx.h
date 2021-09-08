@@ -85,7 +85,10 @@
 
 
 void vt_cursor_moveto( char *p_vtcmd, int x, int y);
-
+void vt_cursor_up( char *p_vtcmd, int n);
+void vt_cursor_down( char *p_vtcmd, int n);
+void vt_cursor_left( char *p_vtcmd, int n);
+void vt_cursor_right( char *p_vtcmd, int n);
 
 
 #endif /*VTXXX_H_*/

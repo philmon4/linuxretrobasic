@@ -1,0 +1,4 @@
+# basic ignoreables
+a.out
+*.o
+
