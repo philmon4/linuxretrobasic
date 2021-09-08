@@ -2,7 +2,17 @@ RetroStyle STM32
 ==========
 My primary goal is to transform robinhedwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
-*NB This is a non-working repo right now. The first step to get a Linux version of the BASIC interpreter up and running should be available in the next week or so.*
+Current state
+=============
+make.sh script compiles code under 64bit Ubuntu.
+*  Terminal display:
+Has basic cursor movement and delete functionality for line editor entry. Also clear screen and cursor position updating.
+Terminal IO tested using in gnome terminal. This should work using a serial terminal like screen too.
+So it could be ported to other platforms at this point.
+* Interpreter:
+Some basic commands, and program entry seem to work. [TODO, get some test written]
+Fixed a 'bug' in integer value tokens, removing assumption of longs being 4 byte, which might be true in Arduino, IDK.
+
 
 Stages
 ------
