@@ -25,6 +25,10 @@
 #include "numeric.h"
 #include "vtxxx.h"
 
+#ifdef LINUX
+ #include "crossline.h"
+#endif
+
 const char bytesFreeStr[] PROGMEM = "bytes free";
 
 
@@ -143,8 +147,11 @@ edit an existing BASIC line
 */
 char *host_readLine() {
     char *line;
+    static char rbuf[256];
 
-    line = readline(INPUT_PROMPT_STR);
+    // line = readline(INPUT_PROMPT_STR);
+    line = crossline_readline ("#", rbuf, 256);
+
     return line;
 }
 
