@@ -76,7 +76,8 @@ void host_startupTone() {
 }
 
 void host_cls() {
-    puts(VT_ERASE_SCREEN);
+    host_outputString(VT_ERASE_SCREEN);
+    host_outputString(VT_CURSOR_MOVETO(1,1));
 }
 
 void host_moveCursor(int x, int y) {

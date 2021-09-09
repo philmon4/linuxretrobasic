@@ -5,24 +5,24 @@
 
 #define TOKEN_EOL		0
 #define TOKEN_IDENT		1	// special case - identifier follows
-#define TOKEN_INTEGER	        2	// special case - integer follows (line numbers only)
-#define TOKEN_NUMBER	        3	// special case - number follows
-#define TOKEN_STRING	        4	// special case - string follows
+#define TOKEN_INTEGER	2	// special case - integer follows (line numbers only)
+#define TOKEN_NUMBER	3	// special case - number follows
+#define TOKEN_STRING	4	// special case - string follows
 
-#define TOKEN_LBRACKET	        8
-#define TOKEN_RBRACKET	        9
-#define TOKEN_PLUS	    	10
+#define TOKEN_LBRACKET	8
+#define TOKEN_RBRACKET	9
+#define TOKEN_PLUS	    10
 #define TOKEN_MINUS		11
 #define TOKEN_MULT		12
 #define TOKEN_DIV		13
-#define TOKEN_EQUALS	        14
+#define TOKEN_EQUALS	14
 #define TOKEN_GT		15
 #define TOKEN_LT		16
-#define TOKEN_NOT_EQ	        17
+#define TOKEN_NOT_EQ	17
 #define TOKEN_GT_EQ		18
 #define TOKEN_LT_EQ		19
-#define TOKEN_CMD_SEP	        20
-#define TOKEN_SEMICOLON	        21
+#define TOKEN_CMD_SEP	20
+#define TOKEN_SEMICOLON	21
 #define TOKEN_COMMA		22
 #define TOKEN_AND		23	// FIRST_IDENT_TOKEN
 #define TOKEN_OR		24
@@ -34,7 +34,7 @@
 #define TOKEN_GOTO		30
 #define TOKEN_REM		31
 #define TOKEN_STOP		32
-#define TOKEN_INPUT	        33
+#define TOKEN_INPUT	    33
 #define TOKEN_CONT		34
 #define TOKEN_IF		35
 #define TOKEN_THEN		36
@@ -50,26 +50,26 @@
 #define TOKEN_MOD		46
 #define TOKEN_NEW		47
 #define TOKEN_GOSUB		48
-#define TOKEN_RETURN	        49
+#define TOKEN_RETURN	49
 #define TOKEN_DIM		50
 #define TOKEN_LEFT		51
-#define TOKEN_RIGHT	        52
+#define TOKEN_RIGHT	    52
 #define TOKEN_MID		53
-#define TOKEN_CLS               54
-#define TOKEN_PAUSE             55
-#define TOKEN_POSITION          56
-#define TOKEN_PIN               57
-#define TOKEN_PINMODE           58
-#define TOKEN_INKEY             59
-#define TOKEN_SAVE              60
-#define TOKEN_LOAD              61
-#define TOKEN_PINREAD           62
-#define TOKEN_ANALOGRD          63
-#define TOKEN_DIR               64
-#define TOKEN_DELETE            65
+#define TOKEN_CLS       54
+#define TOKEN_PAUSE     55
+#define TOKEN_POSITION  56
+#define TOKEN_PIN       57
+#define TOKEN_PINMODE   58
+#define TOKEN_INKEY     59
+#define TOKEN_SAVE      60
+#define TOKEN_LOAD      61
+#define TOKEN_PINREAD   62
+#define TOKEN_ANALOGRD  63
+#define TOKEN_DIR       64
+#define TOKEN_DELETE    65
 // additional ident tokens
 #define TOKEN_GETCHAR   66
-#define TOKEN_EDIT   67
+#define TOKEN_EDIT      67
 
 #define FIRST_IDENT_TOKEN 23
 // PPM: stretched LAST IDENT from 65 to 66
