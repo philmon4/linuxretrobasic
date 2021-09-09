@@ -131,8 +131,10 @@ int host_outputInt(long num) {
 
 void host_outputFloat(float f) {
     char buf[16];
-    host_outputString(float_to_sz(f, buf));
+    float_to_sz(buf, f);
+    host_outputString(buf);
 }
+
 
 void host_newLine() {
     host_outputChar('\r');

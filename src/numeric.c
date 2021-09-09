@@ -3,18 +3,22 @@
 MIT License
 No warranty, or intention that it's fit for any purpose.
 Use where you want, as long as this header and license are
-placed in the files with the code.
+placed in the files containing this source code.
 
 (C)Phil Mundy 2021-09-01
 
 */
 
 #include <stdlib.h>
+#include <string.h>
 
-char *float_to_sz(float f, char *buf) {
+
+int float_to_sz(char *buf, float f) {
+    int len=0;
     //sprintf(buf,"%f",f);
     gcvt(f,6,buf);
-    return buf;
+    len = strlen(buf);
+    return len;
 }
 
 
@@ -22,7 +26,6 @@ char *float_to_sz(float f, char *buf) {
  assumes 4 byte int
 
  stores stringised int in buf provided, and returns the number of chars used.
-
  */
 int int_to_sz( char *buf, int val){
     char ns[12];

@@ -306,6 +306,7 @@ void getTokens_sz(char *out_sz, unsigned char *p) {
         else if (*p == TOKEN_NUMBER) {
             p++;
 //            host_outputFloat(*(float*)p);
+            ix += float_to_sz(out_sz+ix, *(float*)p);
             p+=sizeof(float);       // changed from constant 4 for the hell of it
         }
         else if (*p == TOKEN_INTEGER) {
@@ -1246,7 +1247,8 @@ int parseFnCallExpr() {
         case TOKEN_STR:
             {
                 char buf[16];
-                if (!stackPushStr(float_to_sz(stackPopNum(), buf)))
+                float_to_sz(buf, stackPopNum());
+                if (!stackPushStr(buf))
                     return ERROR_OUT_OF_MEMORY;
             }
             break;

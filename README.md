@@ -4,14 +4,23 @@ My primary goal is to transform robin edwards' great work into a standalone STM3
 
 Current state
 =============
-make.sh script compiles code under 64bit Ubuntu.
+make.sh script compiles code under 64bit Ubuntu it's fairly usable at the moment.
+Looking at the code, the floating point handling might not be complete re. exponent formatted numbers.
+Needs loads and save commands before it is really usable.
+
 *  Terminal display:
-Integrated an MIT licensed readline function***1** for line editor. Also clear screen and cursor positioning using vt100 escapes.
+Integrated an MIT licensed readline function***1** for line editor. Also clear screen and cursor positioning using vt terminal escapes.
 Terminal IO tested using in gnome terminal. This should work using a serial terminal like screen too.
 So it could be ported to other platforms at this point.
+The readline module comes with a bunch of terminal utility functions. I need to check those out and maybe dump my vtxxx utilities.
+
 * Interpreter:
 Some basic commands, and program entry seem to work. [TODO, get some test written]
 Fixed a 'bug' in integer value tokens, removing assumption of longs being 4 byte, which might be true in Arduino, IDK.
+
+Added an EDIT command to BASIC so edit <n> will preload the line editor with an existing line of code
+and enable changes without retyping a whole line.
+
 
 
 Stages
@@ -32,6 +41,10 @@ Footnotes and credits
 ---------------------
 *1 Credit to JC Wang: github:jcwangxp/Crossline for a very nice MIT release of a line editor
 *2 Credit to Robin Edwards for his MIT release of Arduino BASIC.
+
+
+
+
 
 Original README (untouched) follows
 ===================================
