@@ -21,6 +21,7 @@ Fixed a 'bug' in integer value tokens, removing assumption of longs being 4 byte
 Added an EDIT command to BASIC so edit <n> will preload the line editor with an existing line of code
 and enable changes without retyping a whole line.
 
+Added support for E format floats, ie. 1e3 and 1e-3. All constants in exponent format are handled internally as, C floats.
 
 
 Stages

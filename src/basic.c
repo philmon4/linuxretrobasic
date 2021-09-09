@@ -970,21 +970,39 @@ int nextToken()
     // Number: [0-9.]+
     // TODO - handle 1e4 etc
     if (isdigit(*tokenIn) || *tokenIn == '.') {   // Number: [0-9.]+
-        int gotDecimal = 0;
+        int  gotDecimal, gotExponent;
         char numStr[MAX_NUMBER_LEN+1];
-        int numLen = 0;
+        int  numLen;
+
+        gotDecimal=0;
+        gotExponent=0;
+        numLen=0;
         do {
-            if (numLen == MAX_NUMBER_LEN) return ERROR_LEXER_BAD_NUM;
+            if (numLen == MAX_NUMBER_LEN)
+                return ERROR_LEXER_BAD_NUM;
             if (*tokenIn == '.') {
-                if (gotDecimal) return ERROR_LEXER_BAD_NUM;
-                else gotDecimal = 1;
+                if (gotDecimal)
+                    return ERROR_LEXER_BAD_NUM;
+                else
+                    gotDecimal = 1;
             }
+            if ((numLen!=0) && ((*tokenIn == 'e') || (*tokenIn == 'E')) ){
+                gotExponent = 1;
+                gotDecimal = 1; /* force exponent based numbers to be float */
+            }
+            /* If code is modified so all E formatted numbers are not all forced to floats
+             * don't forget, floats can be made from negative exponents 1E-3 etc.
+             * luckily if we find an exponent we can reuse the gotDecimal flag
+             * because 1.3E2.2 can be made illegal anyway so error checks stay the same.
+             * if ( (*tokenIn == '-') && (gotExponent) )
+             *  gotDecimal=1;
+            */
             numStr[numLen++] = *tokenIn++;
-        } 
-        while (isdigit(*tokenIn) || *tokenIn == '.');
+        } while (isdigit(*tokenIn) || (*tokenIn == '.') || (*tokenIn == 'e') || (*tokenIn == 'E') || (*tokenIn == '-'));
 
         numStr[numLen] = 0;
-        if (tokenOutLeft <= 5) return ERROR_LEXER_TOO_LONG;
+        if (tokenOutLeft <= 5)
+            return ERROR_LEXER_TOO_LONG;
         tokenOutLeft -= 5;
         if (!gotDecimal) {
             long val = strtol(numStr, 0, 10);
@@ -996,8 +1014,7 @@ int nextToken()
                 tokenOut += sizeof(long);
             }
         }
-        if (gotDecimal)
-        {
+        if (gotDecimal) {
             *tokenOut++ = TOKEN_NUMBER;
             *(float*)tokenOut = (float)strtod(numStr, 0);
             tokenOut += sizeof(float);
@@ -1024,7 +1041,8 @@ int nextToken()
             if (strcasecmp(identStr, (char *)tokenTable[i].token) == 0) {
 #endif
 
-                if (tokenOutLeft <= 1) return ERROR_LEXER_TOO_LONG;
+                if (tokenOutLeft <= 1)
+                    return ERROR_LEXER_TOO_LONG;
                 tokenOutLeft--;
                 *tokenOut++ = i;
                 // special case for REM
@@ -1045,8 +1063,10 @@ int nextToken()
         // no matching keyword - this must be an identifier
         // $ is only allowed at the end
         char *dollarPos = strchr(identStr, '$');
-        if  (dollarPos && dollarPos!= &identStr[0] + identLen - 1) return ERROR_LEXER_UNEXPECTED_INPUT;
-        if (tokenOutLeft <= 1+identLen) return ERROR_LEXER_TOO_LONG;
+        if  (dollarPos && dollarPos!= &identStr[0] + identLen - 1)
+            return ERROR_LEXER_UNEXPECTED_INPUT;
+        if (tokenOutLeft <= 1+identLen)
+            return ERROR_LEXER_TOO_LONG;
         tokenOutLeft -= 1+identLen;
         *tokenOut++ = TOKEN_IDENT;
         strcpy((char*)tokenOut, identStr);
@@ -1058,7 +1078,8 @@ int nextToken()
     if (*tokenIn=='\"') {
         *tokenOut++ = TOKEN_STRING;
         tokenOutLeft--;
-        if (tokenOutLeft <= 1) return ERROR_LEXER_TOO_LONG;
+        if (tokenOutLeft <= 1)
+            return ERROR_LEXER_TOO_LONG;
         tokenIn++;
         while (*tokenIn) {
             if (*tokenIn == '\"' && *(tokenIn+1) != '\"')
@@ -1067,9 +1088,11 @@ int nextToken()
                 tokenIn++;
             *tokenOut++ = *tokenIn++;
             tokenOutLeft--;
-            if (tokenOutLeft <= 1) return ERROR_LEXER_TOO_LONG;
+            if (tokenOutLeft <= 1)
+                return ERROR_LEXER_TOO_LONG;
         }
-        if (!*tokenIn) return ERROR_LEXER_UNTERMINATED_STRING;
+        if (!*tokenIn)
+            return ERROR_LEXER_UNTERMINATED_STRING;
         tokenIn++;
         *tokenOut++ = 0;
         tokenOutLeft--;
