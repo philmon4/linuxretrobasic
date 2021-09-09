@@ -37,17 +37,23 @@ int int_to_sz( char *buf, int val){
         *(buf) = '-';
         place++;
     }
-    do{
-        digit=val/divisor;
-        if ((digit!=0)||(!leading_zero))
-        {
-            leading_zero=0;
-            val = val-digit*divisor;
-            *(buf+place) = '0'+digit;
-            place++;
-        }
-        divisor=divisor/10;
-    }while (divisor>0);
+    if (val==0){
+        *buf = '0';
+        place++;
+    }
+    else{
+        do{
+            digit=val/divisor;
+            if ((digit!=0)||(!leading_zero))
+            {
+                leading_zero=0;
+                val = val-digit*divisor;
+                *(buf+place) = '0'+digit;
+                place++;
+            }
+            divisor=divisor/10;
+        }while (divisor>0);
+    }
     /* terminate sz */
     *(buf+place) = '\0';
 

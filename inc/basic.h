@@ -67,9 +67,13 @@
 #define TOKEN_ANALOGRD          63
 #define TOKEN_DIR               64
 #define TOKEN_DELETE            65
+// additional ident tokens
+#define TOKEN_GETCHAR   66
+#define TOKEN_EDIT   67
 
 #define FIRST_IDENT_TOKEN 23
-#define LAST_IDENT_TOKEN 65
+// PPM: stretched LAST IDENT from 65 to 66
+#define LAST_IDENT_TOKEN 67
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22

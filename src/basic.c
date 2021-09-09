@@ -151,26 +151,83 @@ const char* const errorTable[] PROGMEM = {
 #define TKN_FMT_PRE		0x80
 
 
-PROGMEM const TokenTableEntry tokenTable[] = {
-    {0, 0}, {0, 0}, {0, 0}, {0, 0},
-    {0, 0}, {0, 0}, {0, 0}, {0, 0},
-    {"(", 0}, {")",0}, {"+",0}, {"-",0},
-    {"*",0}, {"/",0}, {"=",0}, {">",0},
-    {"<",0}, {"<>",0}, {">=",0}, {"<=",0},
-    {":",TKN_FMT_POST}, {";",0}, {",",0}, {"AND",TKN_FMT_PRE|TKN_FMT_POST},
-    {"OR",TKN_FMT_PRE|TKN_FMT_POST}, {"NOT",TKN_FMT_POST}, {"PRINT",TKN_FMT_POST}, {"LET",TKN_FMT_POST},
-    {"LIST",TKN_FMT_POST}, {"RUN",TKN_FMT_POST}, {"GOTO",TKN_FMT_POST}, {"REM",TKN_FMT_POST},
-    {"STOP",TKN_FMT_POST}, {"INPUT",TKN_FMT_POST},  {"CONT",TKN_FMT_POST}, {"IF",TKN_FMT_POST},
-    {"THEN",TKN_FMT_PRE|TKN_FMT_POST}, {"LEN",1|TKN_ARG1_TYPE_STR}, {"VAL",1|TKN_ARG1_TYPE_STR}, {"RND",0},
-    {"INT",1}, {"STR$", 1|TKN_RET_TYPE_STR}, {"FOR",TKN_FMT_POST}, {"TO",TKN_FMT_PRE|TKN_FMT_POST},
-    {"STEP",TKN_FMT_PRE|TKN_FMT_POST}, {"NEXT", TKN_FMT_POST}, {"MOD",TKN_FMT_PRE|TKN_FMT_POST}, {"NEW",TKN_FMT_POST},
-    {"GOSUB",TKN_FMT_POST}, {"RETURN",TKN_FMT_POST}, {"DIM", TKN_FMT_POST}, {"LEFT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
-    {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR}, {"CLS",TKN_FMT_POST}, {"PAUSE",TKN_FMT_POST},
-    {"POSITION", TKN_FMT_POST},  {"PIN",TKN_FMT_POST}, {"PINMODE", TKN_FMT_POST}, {"INKEY$", 0},
-    {"SAVE", TKN_FMT_POST}, {"LOAD", TKN_FMT_POST}, {"PINREAD",1}, {"ANALOGRD",1},
-    {"DIR", TKN_FMT_POST}, {"DELETE", TKN_FMT_POST}
-};
+// function declarations
 
+unsigned char *findProgLine(uint16_t targetLineNumber);
+
+int parse_GETCHAR();
+
+
+PROGMEM const TokenTableEntry tokenTable[] = {
+/* 00 */    {0, 0},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {0, 0},
+            {"(",0},
+            {")",0},
+/* 10 */    {"+",0},
+            {"-",0},
+            {"*",0},
+            {"/",0},
+            {"=",0},
+            {">",0},
+            {"<",0},
+            {"<>",0},
+            {">=",0},
+            {"<=",0},
+/* 20 */    {":",TKN_FMT_POST},
+            {";",0},
+            {",",0},
+            {"AND",TKN_FMT_PRE|TKN_FMT_POST},
+            {"OR",TKN_FMT_PRE|TKN_FMT_POST},
+            {"NOT",TKN_FMT_POST},
+            {"PRINT",TKN_FMT_POST},
+            {"LET",TKN_FMT_POST},
+            {"LIST",TKN_FMT_POST},
+            {"RUN",TKN_FMT_POST},
+/* 30 */    {"GOTO",TKN_FMT_POST},
+            {"REM",TKN_FMT_POST},
+            {"STOP",TKN_FMT_POST},
+            {"INPUT",TKN_FMT_POST}, 
+            {"CONT",TKN_FMT_POST},
+            {"IF",TKN_FMT_POST},
+            {"THEN",TKN_FMT_PRE|TKN_FMT_POST},
+            {"LEN",1|TKN_ARG1_TYPE_STR},
+            {"VAL",1|TKN_ARG1_TYPE_STR},
+            {"RND",0},
+/* 40 */    {"INT",1},
+            {"STR$", 1|TKN_RET_TYPE_STR},
+            {"FOR",TKN_FMT_POST},
+            {"TO",TKN_FMT_PRE|TKN_FMT_POST},
+            {"STEP",TKN_FMT_PRE|TKN_FMT_POST},
+            {"NEXT", TKN_FMT_POST},
+            {"MOD",TKN_FMT_PRE|TKN_FMT_POST},
+            {"NEW",TKN_FMT_POST},
+            {"GOSUB",TKN_FMT_POST},
+            {"RETURN",TKN_FMT_POST},
+/* 50 */    {"DIM", TKN_FMT_POST},
+            {"LEFT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
+            {"RIGHT$",2|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
+            {"MID$",3|TKN_ARG1_TYPE_STR|TKN_RET_TYPE_STR},
+            {"CLS",TKN_FMT_POST},
+            {"PAUSE",TKN_FMT_POST},
+            {"POSITION", TKN_FMT_POST},
+            {"PIN",TKN_FMT_POST},
+            {"PINMODE", TKN_FMT_POST},
+            {"INKEY$", 0},
+/* 60 */    {"SAVE", TKN_FMT_POST},
+            {"LOAD", TKN_FMT_POST},
+            {"PINREAD",1},
+            {"ANALOGRD",1},
+            {"DIR", TKN_FMT_POST},
+            {"DELETE", TKN_FMT_POST},
+            {"GETCHAR$",0},
+            {"EDIT",TKN_FMT_POST},
+}; /* Don't forget to edit the #defines in basic.h -> Last_TOKEN and TOKEN value */
 
 /* **************************************************************************
  * PROGRAM FUNCTIONS
@@ -187,7 +244,7 @@ void printTokens(unsigned char *p) {
         else if (*p == TOKEN_NUMBER) {
             p++;
             host_outputFloat(*(float*)p);
-            p+=sizeof(float);                   // changed from constant 4 for the hell of it
+            p+=sizeof(float);       // changed from constant 4 for the hell of it
         }
         else if (*p == TOKEN_INTEGER) {
             p++;
@@ -235,6 +292,73 @@ void printTokens(unsigned char *p) {
     }
 }
 
+void getTokens_sz(char *out_sz, unsigned char *p) {
+    int modeREM = 0;
+    int ix=0; /* output buffer string index */
+
+    while (*p != TOKEN_EOL) {
+        if (*p == TOKEN_IDENT) {
+            p++;
+            while (*p < 0x80)
+                out_sz[ix++] = *p++;
+            out_sz[ix++] = (*p++)-0x80;
+        }
+        else if (*p == TOKEN_NUMBER) {
+            p++;
+//            host_outputFloat(*(float*)p);
+            p+=sizeof(float);       // changed from constant 4 for the hell of it
+        }
+        else if (*p == TOKEN_INTEGER) {
+            p++;
+            ix += int_to_sz((out_sz+ix),*(long*)p);
+            p+=sizeof(long);        // Fixed: PPM was constant 4, untrue for some platforms
+        }
+        else if (*p == TOKEN_STRING) {
+            p++;
+            if (modeREM) {
+                strcpy((out_sz+ix), (char*)p);
+                p+=1 + strlen((char*)p);
+            }
+            else {
+                out_sz[ix++] = '\"';
+                while (*p) {
+                    if (*p == '\"') out_sz[ix++] = '\"';
+                    out_sz[ix++] = *p++;
+                }
+                out_sz[ix++] = '\"';
+                p++;
+            }
+        }
+        else {
+            #ifdef ARDUINO
+                uint8_t fmt = pgm_read_byte_near(&tokenTable[*p].format);
+            #else
+                uint8_t fmt = tokenTable[*p].format;
+            #endif
+
+            if (fmt & TKN_FMT_PRE)
+                out_sz[ix++] = ' ';
+
+            #ifdef ARDUINO
+                strcpy((out_sz+ix), (char *)pgm_read_word(&tokenTable[*p].token));
+                ix += strlen( (char *)pgm_read_word(&tokenTable[*p].token) );
+            #else
+                strcpy((out_sz+ix), (char *)tokenTable[*p].token);
+                ix += strlen( (char *)tokenTable[*p].token);
+            #endif
+
+            if (fmt & TKN_FMT_POST)
+                out_sz[ix++] = ' ';
+            if (*p==TOKEN_REM)
+                modeREM = 1;
+            p++;
+        }
+    }
+    out_sz[ix] = '\0';
+}
+
+
+
 void listProg(uint16_t first, uint16_t last) {
     unsigned char *p = &mem[0];
     while (p < &mem[sysPROGEND]) {
@@ -248,6 +372,26 @@ void listProg(uint16_t first, uint16_t last) {
         p+= *(uint16_t *)p;
     }
 }
+
+/* place program line into edit buffer and set flag to edit current content */
+void edit_line(uint16_t eline_num) {
+    unsigned char *p;
+    int ix = 0; /* index into destination line being assembled */
+    uint16_t prog_line;
+
+    p = findProgLine(eline_num);
+    prog_line = *(uint16_t*)(p+2);
+
+    ix += int_to_sz(eline_buf, prog_line);
+    
+    eline_buf[ix] = ' ';
+    ix++;
+
+    getTokens_sz( eline_buf+ix, p+4);
+    eline_preload=1;
+}
+
+
 
 unsigned char *findProgLine(uint16_t targetLineNumber) {
     unsigned char *p = &mem[0];
@@ -1262,6 +1406,26 @@ int parse_INKEY() {
     return TYPE_STRING;	
 }
 
+/**
+ * similar to inkey, but more like c, where execution stops untill a char is returned
+ * (or eof?)
+ */
+int parse_GETCHAR() {
+    getNextToken();
+    if (executeMode) {
+        char str[2];
+        str[0] = host_getchar();
+        str[1] = 0;
+        if (!stackPushStr(str))
+            return ERROR_OUT_OF_MEMORY;
+    }
+    return TYPE_STRING;	
+}
+
+
+
+
+
 int parseUnaryNumExp()
 {
     int op = curToken;
@@ -1282,6 +1446,7 @@ int parseUnaryNumExp()
     }
 }
 
+
 /// primary
 int parsePrimary() {
     switch (curToken) {
@@ -1300,6 +1465,8 @@ int parsePrimary() {
         return parse_RND();
     case TOKEN_INKEY:
         return parse_INKEY();
+    case TOKEN_GETCHAR:
+        return parse_GETCHAR();
 
         // unary ops
     case TOKEN_MINUS:
@@ -1527,6 +1694,24 @@ int parse_LIST() {
     }
     return 0;
 }
+
+/* pull a line from program to be placed edit buffer */
+int parse_EDIT() {
+    getNextToken();
+    uint16_t line = 0;
+    if (curToken != TOKEN_EOL) {
+        int val = expectNumber();
+        if (val) return val;	// error
+        if (executeMode)
+            line = (uint16_t)stackPopNum();
+    }
+    if (executeMode) {
+        edit_line(line);
+    }
+    return 0;
+}
+
+
 
 int parse_PRINT() {
     getNextToken();
@@ -1885,7 +2070,9 @@ int parseStmts()
         case TOKEN_NEXT: ret = parse_NEXT(); break;
         case TOKEN_GOSUB: ret = parse_GOSUB(); break;
         case TOKEN_DIM: ret = parse_DIM(); break;
-        case TOKEN_PAUSE: ret = parse_PAUSE(); break;
+        case TOKEN_PAUSE:
+            ret = parse_PAUSE();
+            break;
         
         case TOKEN_LOAD:
         case TOKEN_SAVE:
@@ -1906,6 +2093,10 @@ int parseStmts()
         case TOKEN_CLS:
         case TOKEN_DIR:
             ret = parseSimpleCmd();
+            break;
+
+        case TOKEN_EDIT:
+            parse_EDIT();
             break;
             
         default: 

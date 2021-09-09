@@ -19,9 +19,14 @@
 
 #define MAGIC_AUTORUN_NUMBER    0xFC
 
+#define EDBUFFER_LEN 256
+
 // BASIC command line prompt
 #define INPUT_PROMPT_STR ">"
 
+
+extern char eline_buf[EDBUFFER_LEN];
+extern int eline_preload;
 
 void host_init(void);
 void host_sleep(long ms);
@@ -41,8 +46,11 @@ void host_outputFloat(float f);
 char *host_floatToStr(float f, char *buf);
 int host_outputInt(long val);
 void host_newLine();
+
 char *host_readLine();
 char host_getKey();
+char host_getchar();
+
 bool host_ESCPressed();
 void host_outputFreeMem(unsigned int val);
 void host_saveProgram(bool autoexec);

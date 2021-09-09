@@ -21,8 +21,6 @@ int main( int argc, char* argv[]){
 
     reset();
     host_init();
-    
-    host_init();
     host_cls();
 
 

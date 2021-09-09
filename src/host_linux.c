@@ -31,6 +31,8 @@
 
 const char bytesFreeStr[] PROGMEM = "bytes free";
 
+char eline_buf[EDBUFFER_LEN];
+int eline_preload = 0; /*flag when eline has contents preloaded to edit a line */
 
 void host_init(void) {
     //#[STUB
@@ -147,10 +149,18 @@ edit an existing BASIC line
 */
 char *host_readLine() {
     char *line;
-    static char rbuf[256];
+    
 
     // line = readline(INPUT_PROMPT_STR);
-    line = crossline_readline ("#", rbuf, 256);
+
+    /* preserve buffer contents if preloaded to edit existing line */
+    if ( eline_preload ){
+        eline_preload = 0;
+    }
+    else {
+        eline_buf[0]='\0';
+    }
+    line = crossline_readline2("#", eline_buf, EDBUFFER_LEN);
 
     return line;
 }
@@ -166,6 +176,14 @@ char host_getKey() {
     */
     return 0;
 }
+
+char host_getchar() {
+
+    char c = crossline_getch(); // gets a char with no echo
+
+    return c;
+}
+
 
 bool host_ESCPressed() {
     //[#STUB
