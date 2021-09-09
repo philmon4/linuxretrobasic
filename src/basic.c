@@ -968,7 +968,6 @@ int nextToken()
         return -1;
     }
     // Number: [0-9.]+
-    // TODO - handle 1e4 etc
     if (isdigit(*tokenIn) || *tokenIn == '.') {   // Number: [0-9.]+
         int  gotDecimal, gotExponent;
         char numStr[MAX_NUMBER_LEN+1];
@@ -988,12 +987,14 @@ int nextToken()
             }
             if ((numLen!=0) && ((*tokenIn == 'e') || (*tokenIn == 'E')) ){
                 gotExponent = 1;
-                gotDecimal = 1; /* force exponent based numbers to be float */
+                gotDecimal = 1; /* force exponent based numbers to be float even if number isn't */
             }
-            /* If code is modified so all E formatted numbers are not all forced to floats
-             * don't forget, floats can be made from negative exponents 1E-3 etc.
+            /* If code is ever modified so all E formatted numbers are not forced to floats
+             * don't forget that floats can be made from negative exponents 1E-3 etc.
              * luckily if we find an exponent we can reuse the gotDecimal flag
-             * because 1.3E2.2 can be made illegal anyway so error checks stay the same.
+             * because 1.3E2.2 will be made illegal anyway with existing error checks.
+             * Note that srtol() used below will NOT recognise E formatted numbers so that
+             * would need to be swapped out if 1E3 etc need to be recognised as integers.
              * if ( (*tokenIn == '-') && (gotExponent) )
              *  gotDecimal=1;
             */

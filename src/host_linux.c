@@ -32,7 +32,7 @@
 const char bytesFreeStr[] PROGMEM = "bytes free";
 
 char eline_buf[EDBUFFER_LEN];
-int eline_preload = 0; /*flag when eline has contents preloaded to edit a line */
+int eline_preload = 0; /*flag when eline has contents preloaded to edit an existing program line */
 
 void host_init(void) {
     //#[STUB
