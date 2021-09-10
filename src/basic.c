@@ -22,13 +22,15 @@
  *
  * LICENSE
  * This code is released under the MIT Licence.
- * The only condition is: Keep this header comment at the top of the file containing this code.
- * Disclaimer: Any problems are your problems, and this code is not provided as fit for any purpose at all.
+ * The only condition is: Keep this header comment at the top of the file
+ * containing this code.
+ * Disclaimer: Any problems are your problems, and this code is not provided as
+ * fit for any purpose at all.
  * (C)2021 P.Mundy
- */
 
+=========================================================================================
 
-/* Original header follows [Which will become out of date]
+ * Original header follows [tech details will gradually become out of date]
  * ---------------------------------------------------------------------------
  * Basic Interpreter
  * Robin Edwards 2014
