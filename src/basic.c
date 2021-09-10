@@ -148,7 +148,7 @@ const char* const errorTable[] PROGMEM = {
 #define TKN_ARG_SHIFT		3
 // bits 7,8 formatting
 #define TKN_FMT_POST		0x40
-#define TKN_FMT_PRE		0x80
+#define TKN_FMT_PRE		    0x80
 
 
 // function declarations
@@ -226,7 +226,8 @@ PROGMEM const TokenTableEntry tokenTable[] = {
             {"DIR", TKN_FMT_POST},
             {"DELETE", TKN_FMT_POST},
             {"GETCHAR$",0},
-            {"EDIT",TKN_FMT_POST},
+            {"EDIT",TKN_FMT_POST}, /* 67 */
+            {"SIN",1}, /* 68 expect 1 numeric parameter in call */
 }; /* Don't forget to edit the #defines in basic.h -> Last_TOKEN and TOKEN value */
 
 /* **************************************************************************
@@ -1268,6 +1269,9 @@ int parseFnCallExpr() {
         case TOKEN_INT:
             stackPushNum((float)floor(stackPopNum()));
             break;
+        case TOKEN_SIN:
+            stackPushNum( sin_cos(stackPopNum(),0));
+            break;
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1500,7 +1504,7 @@ int parsePrimary() {
         return parseUnaryNumExp();
 
         // functions
-    case TOKEN_INT: 
+    case TOKEN_INT:
     case TOKEN_STR: 
     case TOKEN_LEN: 
     case TOKEN_VAL:
@@ -1509,6 +1513,7 @@ int parsePrimary() {
     case TOKEN_MID: 
     case TOKEN_PINREAD:
     case TOKEN_ANALOGRD:
+    case TOKEN_SIN:
         return parseFnCallExpr();
 
     default:

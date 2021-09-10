@@ -11,6 +11,19 @@ placed in the files containing this source code.
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
+
+/* series generator coefficients */
+static const double c[6]={
+    1.276278962f,
+    -.142630785f,
+    0.004559008f,
+    -.000068294f,
+    0.000000592f,
+    -.000000003f,
+};
+
 
 
 int float_to_sz(char *buf, float f) {
@@ -62,3 +75,41 @@ int int_to_sz( char *buf, int val){
 
     return place;
 }
+
+
+
+/**
+ * @brief
+ * Core sine and cosine generator
+ * @params
+ * r = angle in radians
+ * cosine_select=1 for cosine(r), 0 for sine(r)
+ * @description
+ * algorithm extracted from zx spectrum basic rom
+ * works nicely with doubles, only used floats to fit
+ * original application.
+ * Thanks go out to:
+ * https://albertveli.wordpress.com/2015/01/10/zx-sine/
+ * https://namoseley.wordpress.com/2012/09/26/arduinoavr-and-zx-spectrum-sin-routines/
+ */
+float sin_cos( float r, int cosine_select){
+        double y, w,z,p;
+        /* scale for radians input and modulo range of input value to +/- 0.5 swings */
+        y=r/(2*M_PI)+(cosine_select?0.25:0); /* add on 90deg shift for cosine if selected */
+        /* if you change the rounding function check it gives right results for positive
+         * and negative values at the wrap-around points!
+         * Some rounding methods won't work how you expect.
+         */
+        y=y-round(y);
+        w = 4*y;
+        /* algorithm is quite poor as it approches +/-0.5 so make use of symmetry to limit range to +/-0.25*/
+        if (w>1)
+            w=2-w;
+        if (w<-1)
+            w=-2-w;
+        z = 2*w*w-1;
+        p = c[0] + 2*c[1]*z + 2*c[2]*(2*z*z-1) + 2*c[3]*(4*z*z*z-3*z) + 2*c[4]*(8*z*z*z*z - 8*z*z + 1) + 2*c[5]*(16*z*z*z*z*z - 20*z*z*z + 5*z ) ;
+        return (float)(w*p);
+}
+
+
