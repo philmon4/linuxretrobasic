@@ -989,6 +989,8 @@ int nextToken()
                     gotDecimal = 1;
             }
             if ((numLen!=0) && ((*tokenIn == 'e') || (*tokenIn == 'E')) ){
+                if (gotExponent)
+                    return ERROR_LEXER_BAD_NUM;
                 gotExponent = 1;
                 gotDecimal = 1; /* force exponent based numbers to be float even if number isn't */
             }
@@ -1002,7 +1004,9 @@ int nextToken()
              *  gotDecimal=1;
             */
             numStr[numLen++] = *tokenIn++;
-        } while (isdigit(*tokenIn) || (*tokenIn == '.') || (*tokenIn == 'e') || (*tokenIn == 'E') || (*tokenIn == '-'));
+        } while (isdigit(*tokenIn) || (*tokenIn == '.') || (*tokenIn == 'e') || (*tokenIn == 'E') ||
+                    ( (*tokenIn == '-') && gotExponent) /* '-' symbol is part of an E formatted number so loop */
+                );
 
         numStr[numLen] = 0;
         if (tokenOutLeft <= 5)
