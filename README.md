@@ -1,5 +1,5 @@
-RetroStyle STM32
-==========
+RetroStyle BASIC for Linux
+==========================
 My primary goal is to transform robin edwards' great work into a standalone STM32 micro, "RetroStyle STM32". I've always wanted to recreate something that gave the 'instant' power up response like the 80's micros.
 
 Current state
@@ -23,6 +23,7 @@ and enable changes without retyping a whole line.
 
 Added support for E format floats, ie. 1e3 and 1e-3. All constants in exponent format are handled internally as, C floats.
 
+Added Sin() Cos() functions - not a great leap to get Tan() from there....
 
 Stages
 ------
