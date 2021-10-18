@@ -71,10 +71,11 @@
 #define TOKEN_GETCHAR   66
 #define TOKEN_EDIT      67
 #define TOKEN_SIN       68
+#define TOKEN_COS       69
 
 #define FIRST_IDENT_TOKEN 23
 // PPM: stretched LAST IDENT from 65 to 66
-#define LAST_IDENT_TOKEN 68
+#define LAST_IDENT_TOKEN 69
 
 #define FIRST_NON_ALPHA_TOKEN    8
 #define LAST_NON_ALPHA_TOKEN    22

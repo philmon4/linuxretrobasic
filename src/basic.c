@@ -230,6 +230,7 @@ PROGMEM const TokenTableEntry tokenTable[] = {
             {"GETCHAR$",0},
             {"EDIT",TKN_FMT_POST}, /* 67 */
             {"SIN",1}, /* 68 expect 1 numeric parameter in call */
+            {"COS",1},
 }; /* Don't forget to edit the #defines in basic.h -> Last_TOKEN and TOKEN value */
 
 /* **************************************************************************
@@ -1278,6 +1279,9 @@ int parseFnCallExpr() {
         case TOKEN_SIN:
             stackPushNum( sin_cos(stackPopNum(),0));
             break;
+        case TOKEN_COS:
+            stackPushNum( sin_cos(stackPopNum(),1));
+            break;
         case TOKEN_STR:
             {
                 char buf[16];
@@ -1520,6 +1524,7 @@ int parsePrimary() {
     case TOKEN_PINREAD:
     case TOKEN_ANALOGRD:
     case TOKEN_SIN:
+    case TOKEN_COS:
         return parseFnCallExpr();
 
     default:

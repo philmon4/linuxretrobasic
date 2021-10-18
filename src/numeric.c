@@ -2,7 +2,7 @@
 
 MIT License
 No warranty, or intention that it's fit for any purpose.
-Use where you want, as long as this header and license are
+Use where you want, as long as this comment and license are
 placed in the files containing this source code.
 
 (C)Phil Mundy 2021-09-01
